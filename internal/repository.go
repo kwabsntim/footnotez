@@ -9,7 +9,7 @@ type Repository struct {
 	DB *sql.DB
 }
 
-func NewRepository(db *sql.DB) Articles {
+func NewArticleRepository(db *sql.DB) Articles {
 	return &Repository{DB: db}
 }
 
@@ -28,7 +28,7 @@ func (r *Repository) Create(article *Article) error {
 	return nil
 
 }
-func (r *Repository) GetAll() ([]*Article, error) {
+func (r *Repository) GetAll() ([]Article, error) {
 	query := `SELECT id, title, content, slug, created_at FROM articles ORDER BY created_at DESC`
 	rows, err := r.DB.Query(query)
 	if err != nil {
@@ -36,7 +36,7 @@ func (r *Repository) GetAll() ([]*Article, error) {
 	}
 	defer rows.Close()
 
-	var articles []*Article
+	var articles []Article
 	for rows.Next() {
 		article := &Article{}
 		err := rows.Scan(
@@ -49,7 +49,7 @@ func (r *Repository) GetAll() ([]*Article, error) {
 		if err != nil {
 			return nil, err
 		}
-		articles = append(articles, article)
+		articles = append(articles, *article)
 	}
 
 	return articles, nil
