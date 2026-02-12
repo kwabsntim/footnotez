@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-type ArticleService struct {
-	repo Repository
+type Service struct {
+	repo RepositoryInterface
 }
 
 //the below is the function that generates the slug
@@ -35,11 +35,11 @@ func generateSlug(title string) string {
 	return slug
 }
 
-func NewArticleService(repo Repository) ArticleInterface {
-	return &ArticleService{repo: repo}
+func NewArticleService(repo RepositoryInterface) ServiceInterface {
+	return &Service{repo: repo}
 }
 
-func (s *ArticleService) CreateArticle(article *Article) error {
+func (s *Service) CreateArticle(article *Article) error {
 	if article.Title == "" || article.Content == "" {
 		return fmt.Errorf("title and content cannot be empty")
 
@@ -52,15 +52,15 @@ func (s *ArticleService) CreateArticle(article *Article) error {
 	return nil
 
 }
-func (s *ArticleService) GetArticle(id int) (*Article, error) {
+func (s *Service) GetArticle(id int) (*Article, error) {
 	return s.repo.GetByID(id)
 }
 
-func (s *ArticleService) GetAllArticles() ([]Article, error) {
+func (s *Service) GetAllArticles() ([]Article, error) {
 	return s.repo.GetAll()
 }
 
-func (s *ArticleService) UpdateArticle(id int, title, content string) (*Article, error) {
+func (s *Service) UpdateArticle(id int, title, content string) (*Article, error) {
 	article, err := s.repo.GetByID(id)
 	if err != nil {
 		return nil, err
@@ -82,6 +82,6 @@ func (s *ArticleService) UpdateArticle(id int, title, content string) (*Article,
 	return article, nil
 }
 
-func (s *ArticleService) DeleteArticle(id int) error {
+func (s *Service) DeleteArticle(id int) error {
 	return s.repo.Delete(id)
 }

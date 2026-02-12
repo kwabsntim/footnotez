@@ -17,6 +17,16 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to create tables: %v", err)
 	}
+	// Create repository, service, and handler
+	articleRepo := internal.NewArticleRepository(db)
+	articleService := internal.NewArticleService(articleRepo)
+	articleHandler := internal.NewArticleHandler(articleService)
+
+	// setup the routes
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/api/article/create", articleHandler.CreateArticle)
+	mux.HandleFunc("/api/article/", articleHandler.GetArticle)
 
 	//starting the server on port 8080
 

@@ -1,6 +1,6 @@
 package internal
 
-type Articles interface {
+type RepositoryInterface interface {
 	Create(article *Article) error
 	GetByID(id int) (*Article, error)
 	Update(article *Article) error
@@ -8,7 +8,7 @@ type Articles interface {
 	GetAll() ([]Article, error)
 }
 
-type ArticleInterface interface {
+type ServiceInterface interface {
 	CreateArticle(article *Article) error
 	GetArticle(id int) (*Article, error)
 	GetAllArticles() ([]Article, error)

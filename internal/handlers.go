@@ -8,15 +8,15 @@ import (
 	"strings"
 )
 
-type ArticleHandler struct {
-	service *ArticleService
+type handler struct {
+	service ServiceInterface
 }
 
-func NewArticleHandler(service *ArticleService) *ArticleHandler {
-	return &ArticleHandler{service: service}
+func NewArticleHandler(service ServiceInterface) handler {
+	return handler{service: service}
 }
 
-func (h *ArticleHandler) CreateArticle(w http.ResponseWriter, r *http.Request) {
+func (h *handler) CreateArticle(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -36,7 +36,7 @@ func (h *ArticleHandler) CreateArticle(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (h *ArticleHandler) GetArticle(w http.ResponseWriter, r *http.Request) {
+func (h *handler) GetArticle(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -59,7 +59,7 @@ func (h *ArticleHandler) GetArticle(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(article)
 }
 
-func (h *ArticleHandler) GetAllArticles(w http.ResponseWriter, r *http.Request) {
+func (h *handler) GetAllArticles(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -75,7 +75,7 @@ func (h *ArticleHandler) GetAllArticles(w http.ResponseWriter, r *http.Request) 
 	json.NewEncoder(w).Encode(articles)
 }
 
-func (h *ArticleHandler) UpdateArticle(w http.ResponseWriter, r *http.Request) {
+func (h *handler) UpdateArticle(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPut {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -108,7 +108,7 @@ func (h *ArticleHandler) UpdateArticle(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(article)
 }
 
-func (h *ArticleHandler) DeleteArticle(w http.ResponseWriter, r *http.Request) {
+func (h *handler) DeleteArticle(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodDelete {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
